@@ -3,6 +3,10 @@ package main.java.model;
 public class Piece {
 
     protected Bloc[][] piece;
+    public int posX;
+    public int posY;
+
+    public Bloc[][] getPieceBlocs(){return piece;}
 
     public Piece(AllPieces.TypesOfPieces id){
         piece = AllPieces.giveByID(id);

@@ -2,9 +2,9 @@ package main.java.model;
 
 public class AllPieces {
     
-    protected static final int size = 4;
-    protected static final int numberOfPieces = 7;
+    public static final int size = 4;
     protected static enum TypesOfPieces{O,I,S,Z,L,J,T};
+    public static final int numberOfPieces = TypesOfPieces.values().length;
 
     public static Bloc[][] pieceO(){
         Bloc[][] pieceO = new Bloc[size][size];

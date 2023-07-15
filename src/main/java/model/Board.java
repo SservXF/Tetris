@@ -14,15 +14,20 @@ public class Board {
     protected int lenX;
     protected int lenY;
 
-    protected Bloc[][] gridBlocks;
+    protected Bloc[][] gridBlocs;
 
     public int getLenX(){return lenX;}
     public int getLenY(){return lenY;}
+    public Bloc[][] getGridBlocs(){return gridBlocs;}
+
+    public void setGridBlocs(int x, int y, Bloc bloc){
+        gridBlocs[x][y] = bloc;
+    }
 
     public Board(int x, int y){
         this.lenX = (x < minX) ? minX : x;
         this.lenY = (y < minY) ? minY : y;
 
-        gridBlocks = new Bloc[this.lenX][this.lenY];
+        gridBlocs = new Bloc[this.lenX][this.lenY];
     }
 }

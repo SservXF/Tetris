@@ -11,16 +11,12 @@ import java.util.Random;
 public class BlocGUI extends JPanel {
 
     public BlocGUI(Bloc b){
-        setBackground(ColorSwitcher.toColor(b));
-        setOpaque(true);
+        if(b == null){
+            setOpaque(false);
+        }
+        else{
+            setBackground(ColorSwitcher.toColor(b));
+            setOpaque(true);
+        }
     }
-
-    public BlocGUI(){
-        setOpaque(false);
-        /*
-        Random r = new Random();
-        setBackground(ColorSwitcher.toColor(Bloc.values()[r.nextInt(Bloc.values().length)]));
-        */
-    }
-    
 }
