@@ -68,17 +68,29 @@ public class Board {
         newCurPiece();
     }
 
+    private boolean emptyLine(int line){
+        for (int i = 0; i < lenX; i++) {
+            if(gridBlocs[i][line] != null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void bigFall(int originLine){
+        for (int j = originLine; j > 0; j--) {
+            for (int i = 0; i < lenX; i++) {
+                gridBlocs[i][j] = gridBlocs[i][j-1];
+                System.out.print(gridBlocs[i][j] + " | ");
+            }
+            System.out.println("ligne : "+j);
+        }
+    }
+
     public void removeFullLines(){
 
         ArrayList<Integer> lines = new ArrayList<Integer>();
         boolean isFull = true;
-
-        for (int j = 0; j < lenY; j++) {
-            for (int i = 0; i < lenX; i++) {
-                System.out.print(gridBlocs[i][j] + " | ");
-            }   
-            System.out.println();
-        }
         
         for (int j = lenY-1; j > 0; j--) {
             for (int i = 0; i < lenX; i++) {
@@ -93,14 +105,19 @@ public class Board {
             isFull = true;
         }
 
-        SCORE+=lines.size();
+        if(!lines.isEmpty()){
+            SCORE+=lines.size();
+            for (Integer line : lines) {
+                for (int i = 0; i < lenX; i++) {
+                    blocsToDraw.remove(gridBlocs[i][line]);
+                    gridBlocs[i][line] = null;
 
-        for (Integer line : lines) {
-            for (int i = 0; i < lenX; i++) {
-                blocsToDraw.remove(gridBlocs[i][line]);
-                gridBlocs[i][line] = null;
+                }
             }
+
+
         }
+
     }
 
     public void oneLineDown(){
@@ -169,7 +186,7 @@ public class Board {
      * @return True si possible, false sinon
      */
     public boolean canPlacePiece(int x, int y, Piece piece){
-        if(x<0 || x+piece.sizeX() >= lenX || y<0 || y+piece.sizeY() >= lenY){return false;}
+        if(x<0 || x+piece.sizeX() > lenX || y<0 || y+piece.sizeY() > lenY){return false;}
         for (int j = 0; j < piece.sizeY(); j++) {
             for (int i = 0; i < piece.sizeX(); i++) {
                 if(gridBlocs[x+i][y+j] != null && piece.getForme()[i][j] != null){

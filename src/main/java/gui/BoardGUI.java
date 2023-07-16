@@ -35,7 +35,7 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
         
         this.board = new Board(x, y);
 
-        this.setPreferredSize(new Dimension(board.getLenX()*(Bloc.SIZE-1) - marginPoint, board.getLenY()*Bloc.SIZE));
+        this.setPreferredSize(new Dimension(board.getLenX()*(Bloc.SIZE+1), board.getLenY()*(Bloc.SIZE+1)+marginPoint));
         this.setBackground(Color.LIGHT_GRAY);
 
         timer = new Timer(NORMAL_DELAY, this);
@@ -106,6 +106,10 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
                 break;
             case 'a':
                 board.oneLineDown();
+                break;
+            case 'r':
+                board.bigFall(board.getLenY()-1);
+                repaint();
                 break;
         }
         repaint();
