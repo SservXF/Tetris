@@ -107,7 +107,7 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
                 case 'a':
                     board.oneLineDown();
                     break;
-        }
+            }
         }
         repaint();
     }
