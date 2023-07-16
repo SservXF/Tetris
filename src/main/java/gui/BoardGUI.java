@@ -25,8 +25,6 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
     protected static int NORMAL_DELAY = 600;
     protected static int SPEED_DELAY = 50;
     protected Timer timer;
-    protected boolean isFallingFinished = false;
-    protected boolean isStarted = false;
     protected boolean isPaused = false;
 
     public BoardGUI(int x, int y){
@@ -63,9 +61,7 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
     }
 
     private void start() {
-        isStarted = true;
         isPaused = false;
-        isFallingFinished = false;
         board.clearBoard();
         board.newCurPiece();
         timer.start();
@@ -73,44 +69,45 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        board.oneLineDown();
-        repaint();
+        if(!board.isFinished){
+            board.oneLineDown();
+            repaint();
+        }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        switch (e.getKeyChar()) {
-            case 'q':
-                if(!isPaused) board.tryMove(board.getCurPiece().posX - 1, board.getCurPiece().posY);
-                break;
-            case 'd':
-                if(!isPaused) board.tryMove(board.getCurPiece().posX + 1, board.getCurPiece().posY);
-                break;
-            case 'z':
-            case 's':
-                if(!isPaused){
+        if(!isPaused && !board.isFinished){
+            switch (e.getKeyChar()) {
+                case 'q':
+                    board.tryMove(board.getCurPiece().posX - 1, board.getCurPiece().posY);
+                    break;
+                case 'd':
+                    board.tryMove(board.getCurPiece().posX + 1, board.getCurPiece().posY);
+                    break;
+                case 'z':
+                case 's':
                     board.rotateCurPiece();
                     board.tryMove(board.getCurPiece().posX, board.getCurPiece().posY);
-                }
-                break;
-
-            case 'p':
-                if(!isPaused){
-                    timer.stop();
-                    isPaused = true;
-                }
-                else{
-                    timer.start();
-                    isPaused = false;
-                }
-                break;
-            case 'a':
-                board.oneLineDown();
-                break;
-            case 'r':
-                board.bigFall(board.getLenY()-1);
-                repaint();
-                break;
+                    break;
+            }
+        }
+        if(!board.isFinished){
+            switch (e.getKeyChar()) {
+                case 'p':
+                    if(!isPaused){
+                        timer.stop();
+                        isPaused = true;
+                    }
+                    else{
+                        timer.start();
+                        isPaused = false;
+                    }
+                    break;
+                case 'a':
+                    board.oneLineDown();
+                    break;
+        }
         }
         repaint();
     }

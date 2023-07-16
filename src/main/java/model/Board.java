@@ -12,6 +12,7 @@ public class Board {
     protected static final int minY = 20;
 
     protected int SCORE = 0;
+    public boolean isFinished = false;
 
     /**
      * Correspondent à la taille de l'objet "Board"
@@ -52,8 +53,13 @@ public class Board {
     }
 
     public void newCurPiece(){
-        curPiece = new Piece(1);
-        curPiece.newPos(lenX/2 - curPiece.sizeX(), 0);
+        curPiece = new Piece();
+        if(canPlacePiece(lenX/2 - curPiece.sizeX(), 0, curPiece)){
+            curPiece.newPos(lenX/2 - curPiece.sizeX(), 0);
+        }
+        else{
+            isFinished = true;
+        }
     }
 
     public void rotateCurPiece(){
@@ -68,22 +74,14 @@ public class Board {
         newCurPiece();
     }
 
-    private boolean emptyLine(int line){
-        for (int i = 0; i < lenX; i++) {
-            if(gridBlocs[i][line] != null){
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void bigFall(int originLine){
         for (int j = originLine; j > 0; j--) {
             for (int i = 0; i < lenX; i++) {
+                if(gridBlocs[i][j-1] != null){
+                    gridBlocs[i][j-1].newPos(i, j);
+                }
                 gridBlocs[i][j] = gridBlocs[i][j-1];
-                System.out.print(gridBlocs[i][j] + " | ");
             }
-            System.out.println("ligne : "+j);
         }
     }
 
@@ -115,7 +113,9 @@ public class Board {
                 }
             }
 
-
+            for (int i = 0; i < lines.size(); i++) {
+                bigFall(lines.get(0));
+            }
         }
 
     }

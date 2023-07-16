@@ -19,6 +19,11 @@ public class Bloc {
         this.couleur = c;
     }
 
+    public void newPos(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
     public void draw(Graphics g) {
 
         Graphics2D g2d = (Graphics2D)g;
