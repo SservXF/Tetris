@@ -24,6 +24,9 @@ public class Bloc {
         Graphics2D g2d = (Graphics2D)g;
 
         g2d.setColor(ColorSwitcher.toColor(couleur));
-        g2d.fillRect(BoardGUI.marginPoint + this.x*SIZE, BoardGUI.marginPoint + this.y*SIZE, SIZE, SIZE);
+        g2d.fillRect(BoardGUI.marginPoint + this.x*SIZE, 2*BoardGUI.marginLength + this.y*SIZE, SIZE, SIZE);
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(2));
+        g2d.drawRect(BoardGUI.marginPoint + this.x*SIZE, 2*BoardGUI.marginLength + this.y*SIZE, SIZE, SIZE);
     }
 }

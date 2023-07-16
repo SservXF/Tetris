@@ -22,6 +22,12 @@ public class Piece {
 
         public int getX(){return sizeX;}
         public int getY(){return sizeY;}
+
+        public void invert(){
+            int tmp = sizeX;
+            sizeX = sizeY;
+            sizeY = tmp;
+        }
     }
 
     public static class AllPieces {
@@ -186,6 +192,19 @@ public class Piece {
                 }
             }
         }
+    }
+
+    public void rotateCW() {
+        final int M = forme.length;
+        final int N = forme[0].length;
+        Bloc[][] ret = new Bloc[N][M];
+        for (int r = 0; r < M; r++) {
+            for (int c = 0; c < N; c++) {
+                ret[c][M-1-r] = forme[r][c];
+            }
+        }
+        forme = ret;
+        size.invert();
     }
 
     public void print(){

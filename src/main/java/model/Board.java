@@ -52,8 +52,14 @@ public class Board {
     }
 
     public void newCurPiece(){
-        curPiece = new Piece();
+        curPiece = new Piece(1);
         curPiece.newPos(lenX/2 - curPiece.sizeX(), 0);
+    }
+
+    public void rotateCurPiece(){
+        if(curPiece.sizeY() + curPiece.posX < lenX && curPiece.sizeX() + curPiece.posY < lenY){
+            curPiece.rotateCW();
+        }
     }
 
     public void pieceDropped(){
@@ -63,9 +69,38 @@ public class Board {
     }
 
     public void removeFullLines(){
-        // TODO : à faire
 
-        SCORE+=1;
+        ArrayList<Integer> lines = new ArrayList<Integer>();
+        boolean isFull = true;
+
+        for (int j = 0; j < lenY; j++) {
+            for (int i = 0; i < lenX; i++) {
+                System.out.print(gridBlocs[i][j] + " | ");
+            }   
+            System.out.println();
+        }
+        
+        for (int j = lenY-1; j > 0; j--) {
+            for (int i = 0; i < lenX; i++) {
+                if(gridBlocs[i][j] == null){
+                    isFull = false;
+                    break;
+                }
+            }
+            if(isFull){
+                lines.add(j);
+            }
+            isFull = true;
+        }
+
+        SCORE+=lines.size();
+
+        for (Integer line : lines) {
+            for (int i = 0; i < lenX; i++) {
+                blocsToDraw.remove(gridBlocs[i][line]);
+                gridBlocs[i][line] = null;
+            }
+        }
     }
 
     public void oneLineDown(){
