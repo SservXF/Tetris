@@ -63,7 +63,7 @@ public class Board {
     }
 
     public void rotateCurPiece(){
-        if(curPiece.sizeY() + curPiece.posX < lenX && curPiece.sizeX() + curPiece.posY < lenY){
+        if(curPiece.sizeY() + curPiece.posX <= lenX && curPiece.sizeX() + curPiece.posY <= lenY){
             curPiece.rotateCW();
         }
     }
