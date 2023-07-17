@@ -1,12 +1,10 @@
 package main.java.model;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
 import main.java.model.Bloc.Couleur;
 import main.java.model.Piece.AllPieces.TypeOfPieces;
-import main.java.gui.BoardGUI;
 
 public class Piece {
 
@@ -215,10 +213,5 @@ public class Piece {
             }
             System.out.println();
         }
-    }
-    
-    public static void main(String[] args) {
-        Piece p = new Piece(1);
-        p.print();
     }
 }

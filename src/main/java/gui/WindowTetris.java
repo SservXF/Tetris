@@ -20,7 +20,6 @@ public class WindowTetris extends JFrame {
     }
 
     public void start(){
-        //TODO: temporaire
         setPanel(new BoardGUI(0, 0));
         this.pack();
         this.setVisible(true);
