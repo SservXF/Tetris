@@ -8,7 +8,9 @@ import javax.swing.JPanel;
 public class WindowTetris extends JFrame {
 
     protected MenuGUI menuGUI;
-    protected BoardGUI boardGUI;
+
+    protected static int lenX = 0;
+    protected static int lenY = 0;
 
     public WindowTetris(){
 
@@ -19,13 +21,14 @@ public class WindowTetris extends JFrame {
 
         setMinimumSize(new Dimension(600, 300));
 
-        menuGUI = new MenuGUI();
+        menuGUI = new MenuGUI(this);
     }
 
     public void setPanel(JPanel panel){
         this.setContentPane(panel);
         this.invalidate();
         this.validate();
+        panel.grabFocus();
     }
 
     public void start(){
