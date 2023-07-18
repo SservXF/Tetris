@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.Timer;
 
+import main.java.gui.OptionsGUI.Arrow;
 import main.java.model.Bloc;
 import main.java.model.Board;
 
@@ -28,6 +29,8 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
     protected static int SPEED_DELAY = 50;
     protected Timer timer;
     protected boolean isPaused = false;
+
+    protected Arrow retour = new Arrow(true);
 
     public BoardGUI(WindowTetris frame, int x, int y){
 
@@ -53,12 +56,20 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
                 Bloc.SIZE = BoardGUI.this.getHeight() / board.getLenY();
                 if(BoardGUI.this.getWidth() < board.getLenX()*Bloc.SIZE){
                     Bloc.SIZE = BoardGUI.this.getWidth() / board.getLenX();
+                    retour.setPreferredSize(new Dimension(Bloc.SIZE*2,Bloc.SIZE*2));
                 }
                 super.componentResized(e);
             }
         });
 
         start();
+
+        retour.setLayout(null);
+        retour.addActionListener(e -> {
+            timer.stop();
+            frame.setPanel(frame.menuGUI);
+        });
+        this.add(retour);
     }
 
     @Override
@@ -67,18 +78,18 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
 
-        int startX = this.getWidth()/2-(board.getLenX()*Bloc.SIZE)/2;
-        int startY = this.getHeight()/2-(board.getLenY()*Bloc.SIZE)/2;
+        int dX = this.getWidth()/2-(board.getLenX()*Bloc.SIZE)/2;
+        int dY = this.getHeight()/2-(board.getLenY()*Bloc.SIZE)/2;
         
         g2d.setStroke(new BasicStroke(3));
-        g2d.drawRect(startX, startY, board.getLenX()*Bloc.SIZE, board.getLenY()*Bloc.SIZE);
+        g2d.drawRect(dX, dY, board.getLenX()*Bloc.SIZE, board.getLenY()*Bloc.SIZE);
 
         g2d.setStroke(new BasicStroke());
         for (Bloc b : board.getBlocsToDraw()) {
-            b.draw(g2d,startX, startY);
+            b.draw(g2d,dX, dY);
         }
 
-        board.getCurPiece().draw(g2d, startX, startY);
+        board.getCurPiece().draw(g2d, dX, dY);
 
     }
 

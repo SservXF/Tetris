@@ -5,12 +5,17 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import main.java.model.Board;
+
 public class WindowTetris extends JFrame {
 
     protected MenuGUI menuGUI;
+    protected OptionsGUI optionGUI;
 
-    protected static int lenX = 0;
-    protected static int lenY = 0;
+    protected static int lenX = Board.minX;
+    protected static int lenY = Board.minY;
+
+    protected FontCustom pixelFont = new FontCustom();
 
     public WindowTetris(){
 
@@ -22,6 +27,7 @@ public class WindowTetris extends JFrame {
         setMinimumSize(new Dimension(600, 300));
 
         menuGUI = new MenuGUI(this);
+        optionGUI = new OptionsGUI(this);
     }
 
     public void setPanel(JPanel panel){

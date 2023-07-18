@@ -8,8 +8,11 @@ public class Board {
     /**
      * Pour avoir une taille minimal de jeu
      */
-    protected static final int minX = 10;
-    protected static final int minY = 20;
+    public static final int minX = 10;
+    public static final int minY = 20;
+
+    public static final int maxX = 16;
+    public static final int maxY = 26;
 
     protected int SCORE = 0;
     public boolean isFinished = false;

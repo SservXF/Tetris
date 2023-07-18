@@ -178,7 +178,7 @@ public class Piece {
         }
     }
 
-    public void draw(Graphics g, int startX, int startY) {
+    public void draw(Graphics g, int dX, int dY) {
 
         Graphics2D g2d = (Graphics2D)g;
 
@@ -186,7 +186,7 @@ public class Piece {
             for (int i = 0; i < sizeX(); i++) {
                 if(forme[i][j] != null){
                     g2d.setColor(ColorSwitcher.toColor(forme[i][j].couleur));
-                    forme[i][j].draw(g2d, startX, startY);
+                    forme[i][j].draw(g2d, dX, dY);
                 }
             }
         }

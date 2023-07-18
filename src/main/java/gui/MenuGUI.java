@@ -1,6 +1,7 @@
 package main.java.gui;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -18,7 +19,7 @@ public class MenuGUI extends JPanel {
     protected static Image background;
     protected static Image scaledBackground;
 
-    protected JPanel buttonsHolder;
+    protected JLabel buttonsHolder;
     protected ButtonCustom jouer;
     protected ButtonCustom options;
     protected ButtonCustom quitter;
@@ -54,9 +55,8 @@ public class MenuGUI extends JPanel {
 
     private void initButtons(){
 
-        buttonsHolder = new JPanel();
+        buttonsHolder = new JLabel();
         buttonsHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
-        buttonsHolder.setOpaque(false);
 
         jouer = new ButtonCustom("J O U E R",FONT_SIZE);
         jouer.addActionListener(e -> {
@@ -64,8 +64,15 @@ public class MenuGUI extends JPanel {
         });
 
         options = new ButtonCustom("O P T I O N S",FONT_SIZE);
+        options.addActionListener(e -> {
+            frame.setPanel(frame.optionGUI);
+        });
 
         quitter = new ButtonCustom("Q U I T T E R",FONT_SIZE);
+        quitter.addActionListener(e -> {
+            frame.dispose();
+            System.exit(0);
+        });
 
         buttonsTab = new ButtonCustom[3];
         buttonsTab[0] = jouer;

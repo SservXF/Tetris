@@ -1,7 +1,14 @@
 package main.java.gui;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
+
+import main.java.model.Board;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -12,18 +19,16 @@ public class OptionsGUI extends JPanel {
 
     protected WindowTetris frame;
 
+    protected static final int nb_panels = 6;
+    protected JPanel[] panels = new JPanel[nb_panels];
+
     protected static float FONT_SIZE;
     protected static float FONT_RATIO = 20;
 
     protected static Image background;
     protected static Image scaledBackground;
 
-    protected JPanel buttonsHolder;
-    protected ButtonCustom jouer;
-    protected ButtonCustom options;
-    protected ButtonCustom quitter;
-
-    protected ButtonCustom[] buttonsTab;
+    protected JLabel buttonsHolder;
 
     public OptionsGUI(WindowTetris frame){
 
@@ -33,7 +38,7 @@ public class OptionsGUI extends JPanel {
         updateFontSize();
 
         try {
-            background = ImageIO.read(new File("src\\main\\java\\gui\\resources\\backgroundMenu.jpg"));
+            background = ImageIO.read(new File("src\\main\\java\\gui\\resources\\backgroundOptions1.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,35 +57,134 @@ public class OptionsGUI extends JPanel {
         this.initButtons();
     }
 
+    private class ChoiceOfOptions extends ButtonCustom {
+    
+        protected ChoiceOfOptions(String s, float size){
+            super(s,size);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            this.setForeground(Color.BLACK);
+        }
+    }
+
+    public static class Arrow extends JButton {
+
+		protected ImageIcon arrow_left = new ImageIcon("src\\main\\java\\gui\\resources\\arrow_left.png");
+		protected ImageIcon arrow_right = new ImageIcon("src\\main\\java\\gui\\resources\\arrow_right.png");
+
+		public Arrow(boolean isLeft){
+			super();
+			this.setIcon(isLeft ? arrow_left : arrow_right);
+			this.setPreferredSize(new Dimension(50, 50));
+			this.setBackground(new Color(245,236,206));
+			this.setFocusPainted(false);
+			this.setOpaque(false);
+			this.setBorder(null);
+		}
+	}
+
+    public class Value extends JLabel {
+    
+        protected Value(int number, int pos, float size){
+            super(String.valueOf(number),pos);
+            this.setFont(FontCustom.getFont(size));
+            this.setForeground(Color.BLACK);
+            this.setBorder(new LineBorder(Color.BLACK));
+            this.setBackground(Color.WHITE);
+            this.setOpaque(true);
+        }
+
+        public void setNumber(int n){
+            setText(String.valueOf(n));
+            repaint();
+        }
+    }
+
     private void initButtons(){
 
-        buttonsHolder = new JPanel();
-        buttonsHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
-        buttonsHolder.setOpaque(false);
+        buttonsHolder = new JLabel();
+        buttonsHolder.setLayout(new GridLayout(nb_panels, 1));
 
-        jouer = new ButtonCustom("J O U E R",FONT_SIZE);
-        jouer.addActionListener(e -> {
-            frame.setPanel(new BoardGUI(frame, WindowTetris.lenX, WindowTetris.lenY));
+		for (int i = 0; i < panels.length; i++) {
+			panels[i] = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+			panels[i].setOpaque(false);
+		}
+
+        ChoiceOfOptions longueur = new ChoiceOfOptions("L O N G U E U R : ", FONT_SIZE);
+        Arrow leftLongueur = new Arrow(true);
+        Value valueLongueur = new Value(WindowTetris.lenX, JLabel.CENTER, FONT_SIZE);
+        Arrow rightLongueur = new Arrow(false);
+
+        leftLongueur.addActionListener(e -> {
+            if(WindowTetris.lenX > Board.minX){
+                WindowTetris.lenX--;
+                valueLongueur.setNumber(WindowTetris.lenX);
+            }
         });
 
-        options = new ButtonCustom("O P T I O N S",FONT_SIZE);
+        rightLongueur.addActionListener(e -> {
+            if(WindowTetris.lenX < Board.maxX){
+                WindowTetris.lenX++;
+                valueLongueur.setNumber(WindowTetris.lenX);
+            }
+        });
 
-        quitter = new ButtonCustom("Q U I T T E R",FONT_SIZE);
+        ChoiceOfOptions largeur = new ChoiceOfOptions("L A R G E U R : ", FONT_SIZE);
+        Arrow leftLargeur = new Arrow(true);
+        Value valueLargeur = new Value(WindowTetris.lenY, JLabel.CENTER, FONT_SIZE);
+        Arrow rightLargeur = new Arrow(false);
 
-        buttonsTab = new ButtonCustom[3];
-        buttonsTab[0] = jouer;
-        buttonsTab[1] = options;
-        buttonsTab[2] = quitter;
+        leftLargeur.addActionListener(e -> {
+            if(WindowTetris.lenY > Board.minY){
+                WindowTetris.lenY--;
+                valueLargeur.setNumber(WindowTetris.lenY);
+            }
+        });
 
-        buttonsHolder.add(jouer);
-        buttonsHolder.add(options);
-        buttonsHolder.add(quitter);
+        rightLargeur.addActionListener(e -> {
+            if(WindowTetris.lenY < Board.maxY){
+                WindowTetris.lenY++;
+                valueLargeur.setNumber(WindowTetris.lenY);
+            }
+        });
+
+        ButtonCustom retour = new ButtonCustom("R E T O U R", FONT_SIZE);
+        retour.addActionListener(e -> {
+            frame.setPanel(frame.menuGUI);
+        });
+        retour.setForeground(Color.BLACK);
+
+        panels[0].add(longueur);
+        panels[0].add(leftLongueur);
+        panels[0].add(valueLongueur);
+        panels[0].add(rightLongueur);
+
+        panels[1].add(largeur);
+        panels[1].add(leftLargeur);
+        panels[1].add(valueLargeur);
+        panels[1].add(rightLargeur);
+
+        panels[2].add(retour);
+
+        for (JPanel p : panels) {
+			buttonsHolder.add(p);
+		}
+
         this.add(buttonsHolder);
     }
 
     private void resizeButtons(float size){
-        for (ButtonCustom b : buttonsTab) {
-            b.setFontSize(size);
+        for (JPanel p : panels) {
+            for (Object b : p.getComponents()) {
+                if(b instanceof ButtonCustom){
+                    ((ButtonCustom)b).setFontSize(size);
+                }
+                else if(b instanceof Arrow){
+                    ((Arrow)b).setPreferredSize(new Dimension((int)size,(int)size));
+                }
+                else if(b instanceof Value){
+                    ((Value)b).setFont(FontCustom.getFont(size));
+                }
+            }
         }
     }
 
