@@ -8,7 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MenuGUI extends JPanel {
+public class OptionsGUI extends JPanel {
 
     protected WindowTetris frame;
 
@@ -25,7 +25,7 @@ public class MenuGUI extends JPanel {
 
     protected ButtonCustom[] buttonsTab;
 
-    public MenuGUI(WindowTetris frame){
+    public OptionsGUI(WindowTetris frame){
 
         this.frame = frame;
 
@@ -40,11 +40,11 @@ public class MenuGUI extends JPanel {
 
         addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                scaledBackground = background.getScaledInstance(MenuGUI.this.getWidth(), MenuGUI.this.getHeight(), Image.SCALE_REPLICATE);
+                scaledBackground = background.getScaledInstance(OptionsGUI.this.getWidth(), OptionsGUI.this.getHeight(), Image.SCALE_REPLICATE);
                 updateFontSize();
-                resizeButtons(MenuGUI.this.getHeight()/FONT_RATIO);
-                buttonsHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 100, MenuGUI.this.getHeight()/2  - (int)FONT_SIZE/2));
-                MenuGUI.this.repaint();
+                resizeButtons(OptionsGUI.this.getHeight()/FONT_RATIO);
+                buttonsHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 100, OptionsGUI.this.getHeight()/2  - (int)FONT_SIZE/2));
+                OptionsGUI.this.repaint();
                 super.componentResized(e);
             }
         });

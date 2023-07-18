@@ -12,10 +12,12 @@ import javax.swing.Timer;
 import main.java.model.Bloc;
 import main.java.model.Board;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 public class BoardGUI extends JPanel implements ActionListener, KeyListener {
 
-    public static final int marginPoint = 5;
-    public static final int marginLength = 10;
+    protected WindowTetris frame;
 
     //protected static int barreDesTaches = 100;
     //protected static Dimension screen = new Dimension((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-barreDesTaches));
@@ -27,16 +29,34 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
     protected Timer timer;
     protected boolean isPaused = false;
 
-    public BoardGUI(int x, int y){
+    public BoardGUI(WindowTetris frame, int x, int y){
+
+        this.frame = frame;
+        
         setFocusable(true);
         addKeyListener(this);
         
         this.board = new Board(x, y);
 
-        this.setPreferredSize(new Dimension(board.getLenX()*(Bloc.SIZE+1), board.getLenY()*(Bloc.SIZE+1)+marginPoint));
+        frame.setMinimumSize(new Dimension(board.getLenX()*Bloc.SIZE, board.getLenY()*Bloc.SIZE));
+
+        //this.setPreferredSize(new Dimension(board.getLenX()*(Bloc.SIZE+1), board.getLenY()*(Bloc.SIZE+1)+marginPoint));
         this.setBackground(Color.LIGHT_GRAY);
 
         timer = new Timer(NORMAL_DELAY, this);
+
+        /*
+         * Pour que la taille des blocs se redimensionnent en fonction de la taille de l'écran
+         */
+        addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                Bloc.SIZE = BoardGUI.this.getHeight() / board.getLenY();
+                if(BoardGUI.this.getWidth() < board.getLenX()*Bloc.SIZE){
+                    Bloc.SIZE = BoardGUI.this.getWidth() / board.getLenX();
+                }
+                super.componentResized(e);
+            }
+        });
 
         start();
     }
@@ -47,16 +67,18 @@ public class BoardGUI extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D)g;
 
+        int startX = this.getWidth()/2-(board.getLenX()*Bloc.SIZE)/2;
+        int startY = this.getHeight()/2-(board.getLenY()*Bloc.SIZE)/2;
         
         g2d.setStroke(new BasicStroke(3));
-        g2d.drawRect(marginPoint, marginPoint, getWidth()-marginLength, getHeight()-marginLength);
+        g2d.drawRect(startX, startY, board.getLenX()*Bloc.SIZE, board.getLenY()*Bloc.SIZE);
 
         g2d.setStroke(new BasicStroke());
         for (Bloc b : board.getBlocsToDraw()) {
-            b.draw(g2d);
+            b.draw(g2d,startX, startY);
         }
 
-        board.getCurPiece().draw(g2d);
+        board.getCurPiece().draw(g2d, startX, startY);
 
     }
 
