@@ -1,9 +1,14 @@
 package main.java.gui;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class WindowTetris extends JFrame {
+
+    protected MenuGUI menuGUI;
+    protected BoardGUI boardGUI;
 
     public WindowTetris(){
 
@@ -11,6 +16,10 @@ public class WindowTetris extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("TETRIS");
+
+        setMinimumSize(new Dimension(600, 300));
+
+        menuGUI = new MenuGUI();
     }
 
     public void setPanel(JPanel panel){
@@ -20,7 +29,8 @@ public class WindowTetris extends JFrame {
     }
 
     public void start(){
-        setPanel(new BoardGUI(0, 0));
+        //setPanel(new BoardGUI(0, 0));
+        setPanel(menuGUI);
         this.pack();
         this.setVisible(true);
     }
