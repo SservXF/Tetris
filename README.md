@@ -2,7 +2,7 @@
 
 # Présentation
 
-Ce projet est un jeu de Tetris en Java. Il a été réalisé dans le seul but de s'entraîner le temps d'une soirée à la programmation en Java.
+Ce projet est un jeu de Tetris en Java. Il a été réalisé dans le seul but de s'entraîner le temps de quelques soirées à la programmation en Java.
 
 # Fonctionnalités
 
